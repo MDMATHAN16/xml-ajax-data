@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xp -7</title>
+    <style>
+        body{
+            background: linear-gradient(to right,#DC4687,#466C74);
+        }
+        div{
+            margin: 10% 30%;
+            height: 160px;
+            background-color:white;
+            width: 500px;
+            border: 2px solid black;
+            box-shadow: inset;
+        }
+        div > h1{
+            color: blue;
+            margin-left: 28%;
+        }
+        div > button{
+            background-color: aquamarine;
+            color: black;
+            font-size: large;
+            margin-left: 38%;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+        div > button:hover{
+            color: aquamarine;
+            background-color: black;
+        }
+        div > table{
+            margin: 10%;
+            width: 400px;
+            border-collapse: collapse;
+        }
+        th{
+            padding: 5px;
+            font-size: large;
+            color: red;
+            border: 1px solid black;
+        }
+        tr > td{
+            border: 1px solid black;
+            padding: 5px;
+            height: 30px;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="hlo">
+    <h1>Students details</h1>
+    <br><button onclick="get()">Show data</button>
+    <table id="result"></table>
+    </div>
+</body>
+<script>
+    function get()
+    {
+        var http = new XMLHttpRequest();
+        http.onreadystatechange=function(){
+            if(this.readyState==4 && this.status==200)
+            {
+                retrive(this);
+            }
+        };
+        http.open("GET","Student.xml",true);
+        console.log('works');
+        http.send();
+    }
+    function retrive(xml)
+    {
+        var i;
+        var xmlDoc = xml.responseXML;
+        var table ="<tr><th>Name</th><th>Reg No</th> <th>Type</th></tr>";
+        var x = xmlDoc.getElementsByTagName("details");
+        for(i=0;i<x.length;i++)
+        {
+            table+="<tr><td>"+x[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue+"</td>";
+            table+="<td>"+x[i].getElementsByTagName("RegNo")[0].childNodes[0].nodeValue+"</td>";
+            table+="<td>"+x[i].getElementsByTagName("SType")[0].childNodes[0].nodeValue+"</td></tr>";
+        }
+        var m =""+( 150 + x.length*60)+"px";
+        console.log(m);
+        document.getElementById("hlo").style.height=m;
+        document.getElementById("result").innerHTML=table;
+    }
+</script>
+</html>
